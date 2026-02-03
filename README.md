@@ -1,48 +1,70 @@
-# Agent Model Performance Tracker 📊
+# 📊 Agent Model Performance Tracker
 
-Track, compare, and analyze AI model performance metrics in one place.
+A browser-based dashboard for tracking and comparing AI model performance. Built for the Prompt Master project.
 
 ## Features
 
-- **📈 Dashboard** - At-a-glance stats with beautiful charts showing success rates, quality scores, and response times
-- **🤖 Model Tracking** - Pre-seeded with 16+ popular models (Claude, GPT-4, Gemini, DeepSeek, Llama, Mistral)
-- **⚖️ Side-by-Side Comparison** - Compare any two models head-to-head across all metrics
-- **💡 Smart Recommendations** - Get model suggestions based on your use case (coding, reasoning, budget, etc.)
-- **📝 Benchmark Entry** - Log your own benchmark results with quality scores, response times, and notes
-- **💾 Data Persistence** - All data stored in localStorage (no backend needed)
-- **📤 Export/Import** - Backup and restore your data as JSON
+### 📈 Dashboard
+- Real-time stats: models tracked, benchmarks run, average success rate
+- Visual charts: success rates, cost vs quality scatter plot, response time distribution, radar comparison
+- Top performer identification
 
-## Metrics Tracked
+### 🤖 Model Management
+- Add custom models with provider, category, and cost info
+- Pre-populated with major models (GPT-4o, Claude Opus 4, Gemini, DeepSeek, Llama)
+- Track multiple categories: General, Coding, Reasoning, Creative, Fast
 
-- ✅ Success rates
-- ⭐ Response quality scores (1-10)
-- ⏱️ Execution time benchmarks
-- 💰 Cost analysis per model ($/1M tokens)
+### 📝 Benchmark Logging
+- Log individual model runs with:
+  - Task type (general, coding, reasoning, creative, Q&A)
+  - Success/failure status
+  - Quality score (1-10)
+  - Response time
+  - Token count
+  - Notes
 
-## Pre-seeded Models
+### ⚖️ Side-by-Side Comparison
+- Compare any two models head-to-head
+- Metrics highlighted: success rate, quality, speed, cost
+- Winner indicated per metric
 
-- **Anthropic**: Claude Opus 4, Sonnet 4, Haiku 3.5
-- **OpenAI**: GPT-4o, GPT-4 Turbo, GPT-4o Mini, o1, o1-mini
-- **Google**: Gemini 2.0 Pro, Gemini 2.0 Flash, Gemini 1.5 Pro
-- **DeepSeek**: V3, R1
-- **Meta**: Llama 3.1 405B, Llama 3.3 70B
-- **Mistral**: Mistral Large
+### 💡 Smart Recommendations
+Use case-based recommendations:
+- **Code Generation** - Best coding benchmarks
+- **Complex Reasoning** - Strongest analytical performance
+- **Creative Writing** - Top creative scores
+- **Low Latency** - Fastest response times
+- **Budget-Friendly** - Best quality per dollar
+- **Highest Quality** - Overall best performer
+
+### 💾 Data Management
+- Export all data to JSON
+- Import previous exports
+- Data persisted in localStorage
 
 ## Usage
 
-1. Visit the live site
-2. Browse the dashboard to see aggregated metrics
-3. Add your own benchmark results via the "Add Benchmark" tab
-4. Compare models side-by-side in the "Compare" tab
-5. Get recommendations for your specific use case
-6. Export your data for backup anytime
+1. Open `index.html` in a browser
+2. Add benchmarks via the "Add Benchmark" tab
+3. View analytics on the Dashboard
+4. Compare models and get recommendations
 
 ## Tech Stack
 
-- Pure HTML/CSS/JS (no framework)
+- Vanilla JavaScript (no framework)
 - Chart.js for visualizations
-- localStorage for data persistence
-- Static site deployable anywhere
+- CSS custom properties for theming
+- localStorage for persistence
+
+## File Structure
+
+```
+henry-model-tracker/
+├── index.html    # Main application
+├── styles.css    # Dark theme styling
+├── app.js        # Application logic
+└── README.md     # This file
+```
 
 ## Built By
 
@@ -50,4 +72,4 @@ Track, compare, and analyze AI model performance metrics in one place.
 
 ---
 
-*"Measure twice, deploy once."*
+*Part of the Prompt Master project*
