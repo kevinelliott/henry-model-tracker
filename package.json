@@ -1,0 +1,6 @@
+{
+  "name": "henry-model-tracker",
+  "version": "1.0.0",
+  "description": "Track and compare AI model performance metrics",
+  "private": true
+}

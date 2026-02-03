@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Agent Model Performance Tracker</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📊</text></svg>">
+</head>
+<body>
+    <div class="app">
+        <header>
+            <div class="header-content">
+                <h1>📊 Agent Model Performance Tracker</h1>
+                <p class="subtitle">Compare AI models. Track metrics. Make smarter choices.</p>
+            </div>
+            <div class="header-actions">
+                <button id="exportBtn" class="btn btn-secondary">📤 Export</button>
+                <button id="importBtn" class="btn btn-secondary">📥 Import</button>
+                <input type="file" id="importFile" accept=".json" hidden>
+            </div>
+        </header>
+
+        <nav class="tabs">
+            <button class="tab active" data-tab="dashboard">Dashboard</button>
+            <button class="tab" data-tab="models">Models</button>
+            <button class="tab" data-tab="compare">Compare</button>
+            <button class="tab" data-tab="recommend">Recommendations</button>
+            <button class="tab" data-tab="add">+ Add Benchmark</button>
+        </nav>
+
+        <main>
+            <!-- Dashboard Tab -->
+            <section id="dashboard" class="tab-content active">
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <span class="stat-value" id="totalModels">0</span>
+                        <span class="stat-label">Models Tracked</span>
+                    </div>
+                    <div class="stat-card">
+                        <span class="stat-value" id="totalBenchmarks">0</span>
+                        <span class="stat-label">Benchmarks Run</span>
+                    </div>
+                    <div class="stat-card">
+                        <span class="stat-value" id="avgSuccess">0%</span>
+                        <span class="stat-label">Avg Success Rate</span>
+                    </div>
+                    <div class="stat-card">
+                        <span class="stat-value" id="topModel">-</span>
+                        <span class="stat-label">Top Performer</span>
+                    </div>
+                </div>
+
+                <div class="charts-grid">
+                    <div class="chart-card">
+                        <h3>Success Rate by Model</h3>
+                        <canvas id="successChart"></canvas>
+                    </div>
+                    <div class="chart-card">
+                        <h3>Cost vs Quality</h3>
+                        <canvas id="costQualityChart"></canvas>
+                    </div>
+                    <div class="chart-card">
+                        <h3>Response Time Distribution</h3>
+                        <canvas id="timeChart"></canvas>
+                    </div>
+                    <div class="chart-card">
+                        <h3>Quality Scores</h3>
+                        <canvas id="qualityChart"></canvas>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Models Tab -->
+            <section id="models" class="tab-content">
+                <div class="models-header">
+                    <h2>Tracked Models</h2>
+                    <button id="addModelBtn" class="btn btn-primary">+ Add Model</button>
+                </div>
+                <div id="modelsList" class="models-grid"></div>
+
+                <!-- Add Model Modal -->
+                <div id="addModelModal" class="modal">
+                    <div class="modal-content">
+                        <h3>Add New Model</h3>
+                        <form id="addModelForm">
+                            <div class="form-group">
+                                <label>Model Name</label>
+                                <input type="text" id="modelName" required placeholder="e.g., GPT-4 Turbo">
+                            </div>
+                            <div class="form-group">
+                                <label>Provider</label>
+                                <input type="text" id="modelProvider" required placeholder="e.g., OpenAI">
+                            </div>
+                            <div class="form-group">
+                                <label>Category</label>
+                                <select id="modelCategory">
+                                    <option value="general">General Purpose</option>
+                                    <option value="coding">Coding</option>
+                                    <option value="reasoning">Reasoning</option>
+                                    <option value="creative">Creative</option>
+                                    <option value="fast">Fast/Efficient</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>Cost per 1M tokens ($)</label>
+                                <input type="number" id="modelCost" step="0.01" placeholder="e.g., 10.00">
+                            </div>
+                            <div class="form-actions">
+                                <button type="button" class="btn btn-secondary" id="cancelModel">Cancel</button>
+                                <button type="submit" class="btn btn-primary">Add Model</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Compare Tab -->
+            <section id="compare" class="tab-content">
+                <h2>Side-by-Side Comparison</h2>
+                <div class="compare-selector">
+                    <select id="compareModel1" class="model-select">
+                        <option value="">Select Model 1</option>
+                    </select>
+                    <span class="vs">VS</span>
+                    <select id="compareModel2" class="model-select">
+                        <option value="">Select Model 2</option>
+                    </select>
+                    <button id="compareBtn" class="btn btn-primary">Compare</button>
+                </div>
+                <div id="comparisonResult" class="comparison-grid"></div>
+            </section>
+
+            <!-- Recommendations Tab -->
+            <section id="recommend" class="tab-content">
+                <h2>Model Recommendations</h2>
+                <div class="use-case-selector">
+                    <label>What's your use case?</label>
+                    <select id="useCase">
+                        <option value="">Select a use case...</option>
+                        <option value="coding">Code Generation & Debugging</option>
+                        <option value="reasoning">Complex Reasoning & Analysis</option>
+                        <option value="creative">Creative Writing</option>
+                        <option value="fast">Quick Responses (Low Latency)</option>
+                        <option value="budget">Budget-Friendly</option>
+                        <option value="quality">Highest Quality</option>
+                    </select>
+                    <button id="getRecommendation" class="btn btn-primary">Get Recommendation</button>
+                </div>
+                <div id="recommendationResult" class="recommendation-card"></div>
+            </section>
+
+            <!-- Add Benchmark Tab -->
+            <section id="add" class="tab-content">
+                <h2>Add Benchmark Result</h2>
+                <form id="benchmarkForm" class="benchmark-form">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Model</label>
+                            <select id="benchModel" required>
+                                <option value="">Select model...</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Task Type</label>
+                            <select id="benchTask">
+                                <option value="general">General Task</option>
+                                <option value="coding">Coding</option>
+                                <option value="reasoning">Reasoning</option>
+                                <option value="creative">Creative</option>
+                                <option value="qa">Q&A</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Success? (Task Completed)</label>
+                            <select id="benchSuccess">
+                                <option value="true">✅ Yes</option>
+                                <option value="false">❌ No</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Quality Score (1-10)</label>
+                            <input type="number" id="benchQuality" min="1" max="10" step="0.1" required placeholder="8.5">
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Response Time (seconds)</label>
+                            <input type="number" id="benchTime" step="0.1" required placeholder="2.5">
+                        </div>
+                        <div class="form-group">
+                            <label>Tokens Used</label>
+                            <input type="number" id="benchTokens" placeholder="1500">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Notes (optional)</label>
+                        <textarea id="benchNotes" placeholder="Any observations about this benchmark..."></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-lg">Save Benchmark</button>
+                </form>
+            </section>
+        </main>
+
+        <footer>
+            <p>Built by <a href="https://x.com/HenryTheGreatAI" target="_blank">@HenryTheGreatAI</a> 🤖</p>
+        </footer>
+    </div>
+
+    <div id="toast" class="toast"></div>
+
+    <script src="app.js"></script>
+</body>
+</html>
