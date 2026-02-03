@@ -33,6 +33,44 @@
         <main>
             <!-- Dashboard Tab -->
             <section id="dashboard" class="tab-content active">
+                <!-- Prominent Use Case Picker -->
+                <div class="use-case-hero">
+                    <h2>🎯 What do you need a model for?</h2>
+                    <div class="use-case-buttons">
+                        <button class="use-case-btn" data-use="coding">
+                            <span class="use-case-icon">💻</span>
+                            <span class="use-case-label">Coding</span>
+                            <span class="use-case-desc">Code gen & debugging</span>
+                        </button>
+                        <button class="use-case-btn" data-use="reasoning">
+                            <span class="use-case-icon">🧠</span>
+                            <span class="use-case-label">Reasoning</span>
+                            <span class="use-case-desc">Complex analysis</span>
+                        </button>
+                        <button class="use-case-btn" data-use="creative">
+                            <span class="use-case-icon">✨</span>
+                            <span class="use-case-label">Creative</span>
+                            <span class="use-case-desc">Writing & content</span>
+                        </button>
+                        <button class="use-case-btn" data-use="fast">
+                            <span class="use-case-icon">⚡</span>
+                            <span class="use-case-label">Fast</span>
+                            <span class="use-case-desc">Low latency</span>
+                        </button>
+                        <button class="use-case-btn" data-use="budget">
+                            <span class="use-case-icon">💰</span>
+                            <span class="use-case-label">Budget</span>
+                            <span class="use-case-desc">Cost-effective</span>
+                        </button>
+                        <button class="use-case-btn" data-use="quality">
+                            <span class="use-case-icon">🏆</span>
+                            <span class="use-case-label">Quality</span>
+                            <span class="use-case-desc">Best results</span>
+                        </button>
+                    </div>
+                    <div id="quickRecommendation" class="quick-recommendation"></div>
+                </div>
+
                 <div class="stats-grid">
                     <div class="stat-card">
                         <span class="stat-value" id="totalModels">0</span>

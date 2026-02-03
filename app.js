@@ -790,6 +790,19 @@ const App = {
             UI.renderRecommendation(useCase);
         });
 
+        // Quick Use Case Buttons (Dashboard)
+        document.querySelectorAll('.use-case-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                // Toggle active state
+                document.querySelectorAll('.use-case-btn').forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                
+                // Show quick recommendation
+                const useCase = btn.dataset.use;
+                this.showQuickRecommendation(useCase);
+            });
+        });
+
         // Export/Import
         document.getElementById('exportBtn')?.addEventListener('click', () => {
             const data = Store.exportData();
@@ -839,6 +852,92 @@ const App = {
         // Switch to compare tab with this model pre-selected
         UI.switchTab('compare');
         document.getElementById('compareModel1').value = modelId;
+    },
+
+    showQuickRecommendation(useCase) {
+        const container = document.getElementById('quickRecommendation');
+        if (!container) return;
+
+        const models = Store.getModels();
+        const stats = Analytics.getModelStats();
+        
+        // Find best models for use case
+        let recommendations = [];
+        
+        switch(useCase) {
+            case 'coding':
+                recommendations = models
+                    .filter(m => m.category === 'coding' || ['deepseek', 'codestral', 'coder'].some(k => m.id.toLowerCase().includes(k)))
+                    .sort((a, b) => (stats[b.id]?.avgQuality || 0) - (stats[a.id]?.avgQuality || 0));
+                if (recommendations.length === 0) {
+                    recommendations = models.filter(m => m.category === 'coding' || m.category === 'general').slice(0, 5);
+                }
+                break;
+            case 'reasoning':
+                recommendations = models
+                    .filter(m => m.category === 'reasoning' || ['o1', 'o3', 'opus', 'r1'].some(k => m.id.toLowerCase().includes(k)))
+                    .sort((a, b) => (stats[b.id]?.avgQuality || 0) - (stats[a.id]?.avgQuality || 0));
+                break;
+            case 'creative':
+                recommendations = models
+                    .filter(m => m.category === 'creative' || m.category === 'general')
+                    .sort((a, b) => (stats[b.id]?.avgQuality || 0) - (stats[a.id]?.avgQuality || 0));
+                break;
+            case 'fast':
+                recommendations = models
+                    .filter(m => m.category === 'fast' || ['mini', 'flash', 'haiku', 'small', 'lite'].some(k => m.id.toLowerCase().includes(k)))
+                    .sort((a, b) => (a.costPer1M || 999) - (b.costPer1M || 999));
+                break;
+            case 'budget':
+                recommendations = [...models].sort((a, b) => (a.costPer1M || 999) - (b.costPer1M || 999));
+                break;
+            case 'quality':
+                recommendations = [...models].sort((a, b) => {
+                    const qualA = stats[a.id]?.avgQuality || 0;
+                    const qualB = stats[b.id]?.avgQuality || 0;
+                    if (qualA !== qualB) return qualB - qualA;
+                    return (b.costPer1M || 0) - (a.costPer1M || 0); // Higher cost = usually better
+                });
+                break;
+        }
+
+        if (recommendations.length === 0) {
+            container.innerHTML = '<p style="color: var(--text-muted);">No models match this use case. Add some benchmarks!</p>';
+            container.classList.add('visible');
+            return;
+        }
+
+        const top = recommendations[0];
+        const alternatives = recommendations.slice(1, 4);
+        
+        const useCaseLabels = {
+            coding: '💻 Best for Coding',
+            reasoning: '🧠 Best for Reasoning',
+            creative: '✨ Best for Creative',
+            fast: '⚡ Fastest Options',
+            budget: '💰 Most Cost-Effective',
+            quality: '🏆 Highest Quality'
+        };
+
+        container.innerHTML = \`
+            <h3>\${useCaseLabels[useCase] || 'Recommendation'}</h3>
+            <div class="top-pick">
+                <div>
+                    <div class="model-name">\${top.name}</div>
+                    <div class="provider">\${top.provider}</div>
+                </div>
+                <div class="cost">\$\${top.costPer1M?.toFixed(2) || '?'}/1M tokens</div>
+            </div>
+            \${alternatives.length > 0 ? \`
+                <div class="alternatives">
+                    <h4>Also consider:</h4>
+                    <div class="alt-list">
+                        \${alternatives.map(m => \`<span class="alt-chip">\${m.name}</span>\`).join('')}
+                    </div>
+                </div>
+            \` : ''}
+        \`;
+        container.classList.add('visible');
     }
 };
 

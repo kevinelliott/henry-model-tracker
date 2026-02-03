@@ -693,3 +693,151 @@ footer a:hover {
     background: var(--danger);
     color: white;
 }
+
+/* ===== Use Case Hero Section ===== */
+.use-case-hero {
+    background: linear-gradient(135deg, var(--bg-card), var(--bg-hover));
+    border-radius: 16px;
+    padding: 2rem;
+    margin-bottom: 2rem;
+    border: 1px solid var(--border);
+    text-align: center;
+}
+
+.use-case-hero h2 {
+    font-size: 1.75rem;
+    margin-bottom: 1.5rem;
+    color: var(--text-primary);
+}
+
+.use-case-buttons {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    gap: 1rem;
+    max-width: 900px;
+    margin: 0 auto 1.5rem;
+}
+
+.use-case-btn {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 1.25rem 1rem;
+    background: var(--bg-dark);
+    border: 2px solid var(--border);
+    border-radius: 12px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    color: var(--text-primary);
+}
+
+.use-case-btn:hover {
+    border-color: var(--primary);
+    background: rgba(99, 102, 241, 0.1);
+    transform: translateY(-2px);
+}
+
+.use-case-btn.active {
+    border-color: var(--primary);
+    background: rgba(99, 102, 241, 0.2);
+    box-shadow: 0 0 20px rgba(99, 102, 241, 0.3);
+}
+
+.use-case-icon {
+    font-size: 2rem;
+    margin-bottom: 0.5rem;
+}
+
+.use-case-label {
+    font-weight: 600;
+    font-size: 1rem;
+    margin-bottom: 0.25rem;
+}
+
+.use-case-desc {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+}
+
+.quick-recommendation {
+    margin-top: 1.5rem;
+    padding: 1.5rem;
+    background: var(--bg-dark);
+    border-radius: 12px;
+    display: none;
+    text-align: left;
+    border: 1px solid var(--primary);
+}
+
+.quick-recommendation.visible {
+    display: block;
+    animation: slideIn 0.3s ease;
+}
+
+@keyframes slideIn {
+    from { opacity: 0; transform: translateY(-10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.quick-recommendation h3 {
+    color: var(--primary-light);
+    margin-bottom: 1rem;
+    font-size: 1.1rem;
+}
+
+.quick-recommendation .top-pick {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1rem;
+    background: rgba(99, 102, 241, 0.1);
+    border-radius: 8px;
+    margin-bottom: 1rem;
+}
+
+.quick-recommendation .top-pick .model-name {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--text-primary);
+}
+
+.quick-recommendation .top-pick .provider {
+    color: var(--text-muted);
+    font-size: 0.9rem;
+}
+
+.quick-recommendation .top-pick .cost {
+    margin-left: auto;
+    font-size: 0.9rem;
+    color: var(--success);
+}
+
+.quick-recommendation .alternatives {
+    margin-top: 1rem;
+}
+
+.quick-recommendation .alternatives h4 {
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+    margin-bottom: 0.5rem;
+}
+
+.quick-recommendation .alt-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+}
+
+.quick-recommendation .alt-chip {
+    padding: 0.4rem 0.8rem;
+    background: var(--bg-hover);
+    border-radius: 20px;
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+}
+
+@media (max-width: 600px) {
+    .use-case-buttons {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
