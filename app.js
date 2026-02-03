@@ -9,18 +9,61 @@ const Store = {
 
     // Default models to seed the tracker
     defaultModels: [
+        // OpenAI - Reasoning models
+        { id: 'o1', name: 'o1', provider: 'OpenAI', category: 'reasoning', costPer1M: 60.00 },
+        { id: 'o1-pro', name: 'o1 Pro', provider: 'OpenAI', category: 'reasoning', costPer1M: 150.00 },
+        { id: 'o1-mini', name: 'o1 Mini', provider: 'OpenAI', category: 'reasoning', costPer1M: 12.00 },
+        { id: 'o3-mini', name: 'o3 Mini', provider: 'OpenAI', category: 'reasoning', costPer1M: 4.40 },
+        // OpenAI - GPT models
         { id: 'gpt-4o', name: 'GPT-4o', provider: 'OpenAI', category: 'general', costPer1M: 5.00 },
+        { id: 'gpt-4o-mini', name: 'GPT-4o Mini', provider: 'OpenAI', category: 'fast', costPer1M: 0.60 },
         { id: 'gpt-4-turbo', name: 'GPT-4 Turbo', provider: 'OpenAI', category: 'general', costPer1M: 10.00 },
         { id: 'gpt-3.5-turbo', name: 'GPT-3.5 Turbo', provider: 'OpenAI', category: 'fast', costPer1M: 0.50 },
+        // Anthropic
         { id: 'claude-opus-4', name: 'Claude Opus 4', provider: 'Anthropic', category: 'reasoning', costPer1M: 75.00 },
         { id: 'claude-sonnet-4', name: 'Claude Sonnet 4', provider: 'Anthropic', category: 'general', costPer1M: 15.00 },
         { id: 'claude-3.5-sonnet', name: 'Claude 3.5 Sonnet', provider: 'Anthropic', category: 'general', costPer1M: 15.00 },
         { id: 'claude-3.5-haiku', name: 'Claude 3.5 Haiku', provider: 'Anthropic', category: 'fast', costPer1M: 1.00 },
+        { id: 'claude-3-opus', name: 'Claude 3 Opus', provider: 'Anthropic', category: 'reasoning', costPer1M: 75.00 },
+        { id: 'claude-3-haiku', name: 'Claude 3 Haiku', provider: 'Anthropic', category: 'fast', costPer1M: 0.25 },
+        // Google
         { id: 'gemini-2-pro', name: 'Gemini 2.0 Pro', provider: 'Google', category: 'reasoning', costPer1M: 7.00 },
         { id: 'gemini-2-flash', name: 'Gemini 2.0 Flash', provider: 'Google', category: 'fast', costPer1M: 0.40 },
+        { id: 'gemini-2-flash-thinking', name: 'Gemini 2.0 Flash Thinking', provider: 'Google', category: 'reasoning', costPer1M: 0.70 },
+        { id: 'gemini-1.5-pro', name: 'Gemini 1.5 Pro', provider: 'Google', category: 'general', costPer1M: 3.50 },
+        { id: 'gemini-1.5-flash', name: 'Gemini 1.5 Flash', provider: 'Google', category: 'fast', costPer1M: 0.15 },
+        // xAI
+        { id: 'grok-2', name: 'Grok 2', provider: 'xAI', category: 'general', costPer1M: 10.00 },
+        { id: 'grok-3', name: 'Grok 3', provider: 'xAI', category: 'reasoning', costPer1M: 15.00 },
+        { id: 'grok-3-mini', name: 'Grok 3 Mini', provider: 'xAI', category: 'fast', costPer1M: 3.00 },
+        // DeepSeek
         { id: 'deepseek-r1', name: 'DeepSeek R1', provider: 'DeepSeek', category: 'reasoning', costPer1M: 2.19 },
+        { id: 'deepseek-r1-distill-llama-70b', name: 'DeepSeek R1 Distill Llama 70B', provider: 'DeepSeek', category: 'reasoning', costPer1M: 0.90 },
+        { id: 'deepseek-r1-distill-qwen-32b', name: 'DeepSeek R1 Distill Qwen 32B', provider: 'DeepSeek', category: 'reasoning', costPer1M: 0.55 },
         { id: 'deepseek-v3', name: 'DeepSeek V3', provider: 'DeepSeek', category: 'coding', costPer1M: 0.89 },
-        { id: 'llama-3.3-70b', name: 'Llama 3.3 70B', provider: 'Meta', category: 'general', costPer1M: 0.90 }
+        { id: 'deepseek-coder-v2', name: 'DeepSeek Coder V2', provider: 'DeepSeek', category: 'coding', costPer1M: 0.28 },
+        // Meta
+        { id: 'llama-3.3-70b', name: 'Llama 3.3 70B', provider: 'Meta', category: 'general', costPer1M: 0.90 },
+        { id: 'llama-3.1-405b', name: 'Llama 3.1 405B', provider: 'Meta', category: 'reasoning', costPer1M: 3.00 },
+        { id: 'llama-3.2-90b-vision', name: 'Llama 3.2 90B Vision', provider: 'Meta', category: 'multimodal', costPer1M: 1.80 },
+        // Mistral
+        { id: 'mistral-large-2', name: 'Mistral Large 2', provider: 'Mistral', category: 'general', costPer1M: 6.00 },
+        { id: 'mistral-medium', name: 'Mistral Medium', provider: 'Mistral', category: 'general', costPer1M: 2.70 },
+        { id: 'mixtral-8x22b', name: 'Mixtral 8x22B', provider: 'Mistral', category: 'general', costPer1M: 1.20 },
+        { id: 'codestral', name: 'Codestral', provider: 'Mistral', category: 'coding', costPer1M: 0.30 },
+        { id: 'mistral-small', name: 'Mistral Small', provider: 'Mistral', category: 'fast', costPer1M: 0.60 },
+        // Cohere
+        { id: 'command-r-plus', name: 'Command R+', provider: 'Cohere', category: 'general', costPer1M: 15.00 },
+        { id: 'command-r', name: 'Command R', provider: 'Cohere', category: 'general', costPer1M: 3.00 },
+        // Alibaba
+        { id: 'qwen-2.5-72b', name: 'Qwen 2.5 72B', provider: 'Alibaba', category: 'general', costPer1M: 0.90 },
+        { id: 'qwen-2.5-coder-32b', name: 'Qwen 2.5 Coder 32B', provider: 'Alibaba', category: 'coding', costPer1M: 0.35 },
+        // 01.AI
+        { id: 'yi-lightning', name: 'Yi Lightning', provider: '01.AI', category: 'fast', costPer1M: 0.14 },
+        { id: 'yi-large', name: 'Yi Large', provider: '01.AI', category: 'general', costPer1M: 3.00 },
+        // Amazon
+        { id: 'nova-pro', name: 'Amazon Nova Pro', provider: 'Amazon', category: 'general', costPer1M: 3.20 },
+        { id: 'nova-lite', name: 'Amazon Nova Lite', provider: 'Amazon', category: 'fast', costPer1M: 0.24 }
     ],
 
     // Sample benchmarks to seed the tracker
