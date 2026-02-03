@@ -6,6 +6,8 @@
 const Store = {
     MODELS_KEY: 'model_tracker_models',
     BENCHMARKS_KEY: 'model_tracker_benchmarks',
+    VERSION_KEY: 'model_tracker_version',
+    CURRENT_VERSION: 2, // Bump this when adding new default models
 
     // Default models to seed the tracker
     defaultModels: [
@@ -87,11 +89,36 @@ const Store = {
 
     getModels() {
         const stored = localStorage.getItem(this.MODELS_KEY);
+        const storedVersion = parseInt(localStorage.getItem(this.VERSION_KEY) || '0');
+        
         if (!stored) {
             this.saveModels(this.defaultModels);
+            localStorage.setItem(this.VERSION_KEY, this.CURRENT_VERSION.toString());
             return this.defaultModels;
         }
-        return JSON.parse(stored);
+        
+        let models = JSON.parse(stored);
+        
+        // Version upgrade: merge in any new default models
+        if (storedVersion < this.CURRENT_VERSION) {
+            const existingIds = new Set(models.map(m => m.id));
+            const newModels = this.defaultModels.filter(m => !existingIds.has(m.id));
+            if (newModels.length > 0) {
+                models = [...models, ...newModels];
+                this.saveModels(models);
+                console.log(`Added ${newModels.length} new models from defaults`);
+            }
+            localStorage.setItem(this.VERSION_KEY, this.CURRENT_VERSION.toString());
+        }
+        
+        return models;
+    },
+    
+    resetToDefaults() {
+        localStorage.removeItem(this.MODELS_KEY);
+        localStorage.removeItem(this.BENCHMARKS_KEY);
+        localStorage.removeItem(this.VERSION_KEY);
+        return { models: this.getModels(), benchmarks: this.getBenchmarks() };
     },
 
     saveModels(models) {
@@ -801,6 +828,15 @@ const App = {
                 const useCase = btn.dataset.use;
                 this.showQuickRecommendation(useCase);
             });
+        });
+
+        // Reset to defaults
+        document.getElementById('resetBtn')?.addEventListener('click', () => {
+            if (confirm('Reset all data to defaults? This will clear your custom benchmarks.')) {
+                Store.resetToDefaults();
+                this.refresh();
+                UI.showToast('Reset to defaults! All 40+ models loaded.');
+            }
         });
 
         // Export/Import
